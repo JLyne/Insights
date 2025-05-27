@@ -12,10 +12,12 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
+@SuppressWarnings("UnstableApiUsage")
 public class InsightsPlaceholderExpansion extends PlaceholderExpansion {
 
     private final InsightsPlugin plugin;
@@ -25,23 +27,22 @@ public class InsightsPlaceholderExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public String getIdentifier() {
+    public @NotNull String getIdentifier() {
         return "insights";
     }
 
     @Override
-    public String getAuthor() {
-        return String.join(", ", plugin.getDescription().getAuthors());
+    public @NotNull String getAuthor() {
+        return String.join(", ", plugin.getPluginMeta().getAuthors());
     }
 
     @Override
-    public String getVersion() {
-        return plugin.getDescription().getVersion();
+    public @NotNull String getVersion() {
+        return plugin.getPluginMeta().getVersion();
     }
 
     @Override
-    public String onPlaceholderRequest(Player player, String identifier) {
-        if (identifier == null) return "";
+    public String onPlaceholderRequest(Player player, @NotNull String identifier) {
         String[] args = identifier.split("_");
         switch (args[0].toLowerCase(Locale.ENGLISH)) {
             case "limits":
@@ -60,7 +61,7 @@ public class InsightsPlaceholderExpansion extends PlaceholderExpansion {
                 UUID worldUid = world.getUID();
                 LimitEnvironment env = new LimitEnvironment(player, world.getName());
                 Optional<Limit> limitOptional = plugin.getLimits().getFirstLimit(item, env);
-                if (!limitOptional.isPresent()) break;
+                if (limitOptional.isEmpty()) break;
 
                 Limit limit = limitOptional.get();
                 switch (args[1].toLowerCase(Locale.ENGLISH)) {
