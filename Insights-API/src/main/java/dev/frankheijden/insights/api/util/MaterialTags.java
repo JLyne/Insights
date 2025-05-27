@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 
 public class MaterialTags implements Tag<Material> {
 
-    private static final List<Material> MATERIALS = Arrays.asList(Material.values());
+    private static final List<Material> MATERIALS = Arrays.stream(Material.values())
+            .filter(m -> !m.isLegacy()).toList();
     public static final MaterialTags BUCKETS = new MaterialTags(m -> m.name().endsWith("_BUCKET"), "buckets");
     public static final MaterialTags NEEDS_GROUND = new MaterialTags(
             EnumSet.of(

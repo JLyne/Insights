@@ -46,7 +46,7 @@ public class RTileEntityTypes {
 
             Map<Material, Object> blockStateMap = new EnumMap<>(Material.class);
             for (Material m : Material.values()) {
-                if (m.isBlock()) {
+                if (!m.isLegacy() && m.isBlock()) {
                     blockStateMap.put(m, craftBlockDataClazz.getMethod("getState").invoke(Bukkit.createBlockData(m)));
                 }
             }

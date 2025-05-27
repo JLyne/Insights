@@ -13,6 +13,7 @@ public class Constants {
     private Constants() {}
 
     public static final Set<Material> BLOCKS = Arrays.stream(Material.values())
+            .filter(m -> !m.isLegacy())
             .filter(Material::isBlock)
             .collect((SetCollector<Material>) HashSet::new);
     public static final Set<ScanObject.MaterialObject> SCAN_BLOCKS = BLOCKS.stream()

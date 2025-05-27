@@ -55,6 +55,7 @@ subprojects {
         compileOnly(libs.paperApi)
         implementation(libs.adventureApi)
         implementation(libs.adventurePlatformBukkit)
+        implementation(libs.adventureMiniMessage)
 
         if (!nms || nmsImpl) {
             compileOnly(project(":Insights-NMS-Core"))
@@ -125,8 +126,7 @@ dependencies {
         .list(rootProject.projectDir.toPath().resolve("Insights-NMS"))
         .filter { !it.fileName.toString().startsWith(".") }
         .forEach {
-            val configuration = if (it.fileName.toString() == "Core") "shadow" else "reobf"
-            implementation(project(":Insights-NMS-${it.fileName}", configuration))
+            implementation(project(":Insights-NMS-${it.fileName}", "shadow"))
         }
 }
 

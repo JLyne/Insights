@@ -18,7 +18,9 @@ public abstract class ScanObject<T extends Enum<T>> {
 
     static {
         for (Material material : Material.values()) {
-            materialMap.put(material, new MaterialObject(material));
+            if (!material.isLegacy()) {
+                materialMap.put(material, new MaterialObject(material));
+            }
         }
         for (EntityType entity : EntityType.values()) {
             entityMap.put(entity, new EntityObject(entity));

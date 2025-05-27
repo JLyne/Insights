@@ -19,6 +19,7 @@ pluginYml = "0.7.1"
 paperApi = { group = "io.papermc.paper", name = "paper-api", version.ref = "minecraft" }
 adventureApi = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
 adventurePlatformBukkit = { group = "net.kyori", name = "adventure-platform-bukkit", version.ref = "adventurePlatformBukkit" }
+adventureMiniMessage = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "adventure" }
 assertj = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
 mockitoCore = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 jupiterApi = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "jupiter" }
