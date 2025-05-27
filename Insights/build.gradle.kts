@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import net.minecrell.pluginyml.paper.PaperPluginDescription
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 
 plugins {
@@ -26,13 +27,19 @@ tasks.withType<ShadowJar> {
     relocate("me.lucko.commodore", "$dependencyDir.commodore")
 }
 
-bukkit {
+paper {
     main = "dev.frankheijden.insights.Insights"
     description = "Insights about your server and regional block limits"
     apiVersion = "1.21.4"
     website = "https://github.com/InsightsPlugin/Insights"
-    softDepend = listOf("PlaceholderAPI")
     authors = listOf("FrankHeijden")
+    serverDependencies {
+        register("PlaceholderAPI") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+        }
+    }
+
     permissions {
         register("insights.info") {
             description = "Allows you to see information about insights"
