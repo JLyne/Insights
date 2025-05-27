@@ -31,4 +31,4 @@ cloudAnnotations = { group = "org.incendo", name = "cloud-annotations", version.
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 userdev = { id = "io.papermc.paperweight.userdev", version.ref = "userdev" }
-pluginYml = { id = "de.eldoria.plugin-yml.bukkit", version.ref = "pluginYml" }
+pluginYml = { id = "de.eldoria.plugin-yml.paper", version.ref = "pluginYml" }
