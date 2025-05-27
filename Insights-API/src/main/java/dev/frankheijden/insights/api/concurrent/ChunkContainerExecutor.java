@@ -1,6 +1,5 @@
 package dev.frankheijden.insights.api.concurrent;
 
-import dev.frankheijden.insights.api.InsightsPlugin;
 import dev.frankheijden.insights.api.concurrent.containers.ChunkContainer;
 import dev.frankheijden.insights.api.concurrent.containers.LoadedChunkContainer;
 import dev.frankheijden.insights.api.concurrent.containers.RunnableContainer;
@@ -89,10 +88,6 @@ public class ChunkContainerExecutor implements ContainerExecutor {
         return submit(container).thenApply(storage -> {
             if (options.save()) worldStorage.getWorld(worldUid).put(chunkKey, storage);
             if (options.track()) scanTracker.set(worldUid, chunkKey, false);
-
-            var metricsManager = InsightsPlugin.getInstance().getMetricsManager();
-            metricsManager.getChunkScanMetric().increment();
-            metricsManager.getTotalBlocksScanned().add(container.getChunkCuboid().getVolume());
 
             return storage;
         });

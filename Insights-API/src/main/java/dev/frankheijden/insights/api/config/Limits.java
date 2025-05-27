@@ -2,7 +2,6 @@ package dev.frankheijden.insights.api.config;
 
 import static java.util.Comparator.comparingInt;
 
-import dev.frankheijden.insights.api.InsightsPlugin;
 import dev.frankheijden.insights.api.config.limits.Limit;
 import dev.frankheijden.insights.api.objects.wrappers.ScanObject;
 import dev.frankheijden.insights.api.utils.SetUtils;
@@ -74,7 +73,6 @@ public class Limits {
      * Retrieves the first limit (sorted ascending on limit, such that the smallest limit is applied).
      */
     public Optional<Limit> getFirstLimit(Material material, Predicate<Limit> limitPredicate) {
-        InsightsPlugin.getInstance().getMetricsManager().getLimitMetric().increment();
         Set<Limit> set = materialLimits.get(material);
         return set == null ? Optional.empty() : Optional.ofNullable(SetUtils.findFirst(set, limitPredicate));
     }
@@ -83,7 +81,6 @@ public class Limits {
      * Retrieves the first limit (sorted ascending on limit, such that the smallest limit is applied).
      */
     public Optional<Limit> getFirstLimit(EntityType entity, Predicate<Limit> limitPredicate) {
-        InsightsPlugin.getInstance().getMetricsManager().getLimitMetric().increment();
         Set<Limit> set = entityLimits.get(entity);
         return set == null ? Optional.empty() : Optional.ofNullable(SetUtils.findFirst(set, limitPredicate));
     }

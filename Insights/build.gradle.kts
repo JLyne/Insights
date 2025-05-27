@@ -12,12 +12,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly(libs.brigadier)
     compileOnly(libs.placeholderapi)
-    implementation(libs.commodore)
     implementation(libs.cloudPaper)
     implementation(libs.cloudAnnotations)
-    implementation(libs.semver)
     compileOnly(project(":Insights-API"))
 }
 

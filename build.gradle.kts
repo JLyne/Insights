@@ -46,17 +46,14 @@ subprojects {
         maven("https://repo.codemc.io/repository/maven-public")
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-        maven("https://papermc.io/repo/repository/maven-public/")
+        maven("https://repo.papermc.io/repository/maven-public/")
         maven("https://libraries.minecraft.net")
     }
 
     val libs = rootProject.libs
     dependencies {
         compileOnly(libs.paperApi)
-        implementation(libs.paperLib)
-        implementation(libs.bStatsBukkit)
         implementation(libs.adventureApi)
-        implementation(libs.adventureMiniMessage)
         implementation(libs.adventurePlatformBukkit)
 
         if (!nms || nmsImpl) {

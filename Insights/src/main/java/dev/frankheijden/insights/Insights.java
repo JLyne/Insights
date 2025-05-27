@@ -1,6 +1,5 @@
 package dev.frankheijden.insights;
 
-import com.github.zafarkhaja.semver.Version;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import dev.frankheijden.insights.api.InsightsPlugin;
 import dev.frankheijden.insights.api.addons.AddonManager;
@@ -19,9 +18,7 @@ import dev.frankheijden.insights.api.config.Notifications;
 import dev.frankheijden.insights.api.config.Settings;
 import dev.frankheijden.insights.api.config.limits.Limit;
 import dev.frankheijden.insights.api.config.parser.YamlParseException;
-import dev.frankheijden.insights.api.metrics.MetricsManager;
 import dev.frankheijden.insights.api.objects.wrappers.ScanObject;
-import dev.frankheijden.insights.api.tasks.UpdateCheckerTask;
 import dev.frankheijden.insights.api.utils.IOUtils;
 import dev.frankheijden.insights.commands.CommandCancelScan;
 import dev.frankheijden.insights.commands.CommandInsights;
@@ -42,7 +39,6 @@ import dev.frankheijden.insights.nms.core.InsightsNMS;
 import dev.frankheijden.insights.placeholders.InsightsPlaceholderExpansion;
 import dev.frankheijden.insights.tasks.PlayerTrackerTask;
 import io.leangen.geantyref.TypeToken;
-import io.papermc.lib.PaperLib;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -60,9 +56,6 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public class Insights extends InsightsPlugin {
-
-    private static final Version minimumCompatibleVersion = Version.of(1, 20, 6);
-
     private static final String SETTINGS_FILE_NAME = "config.yml";
     private static final String MESSAGES_FILE_NAME = "messages.yml";
     private static final String LIMITS_FOLDER_NAME = "limits";
@@ -79,7 +72,6 @@ public class Insights extends InsightsPlugin {
     private AddonStorage addonStorage;
     private WorldChunkScanTracker worldChunkScanTracker;
     private AddonScanTracker addonScanTracker;
-    private MetricsManager metricsManager;
     private ScanHistory scanHistory;
     private ListenerManager listenerManager;
     private InsightsPlaceholderExpansion placeholderExpansion;
@@ -99,11 +91,6 @@ public class Insights extends InsightsPlugin {
     @Override
     public void onEnable() {
         super.onEnable();
-
-        if (isIncompatible()) {
-            throw new RuntimeException("Insights is incompatible with your server version, "
-                    + "we require a Paper backend and a Minecraft version of at least " + minimumCompatibleVersion);
-        }
         nms = InsightsNMS.get();
 
         this.audiences = BukkitAudiences.create(this);
@@ -135,7 +122,6 @@ public class Insights extends InsightsPlugin {
                 settings.SCANS_TIMEOUT_MILLIS
         );
         chunkContainerExecutor = new ChunkContainerExecutor(nms, executor, worldStorage, worldChunkScanTracker);
-        metricsManager = new MetricsManager(this);
         scanHistory = new ScanHistory();
         redstoneUpdateCount = new RedstoneUpdateCount(this);
         redstoneUpdateCount.start();
@@ -146,15 +132,8 @@ public class Insights extends InsightsPlugin {
         reload();
     }
 
-    private static boolean isIncompatible() {
-        var minecraftVersion = Version.parse(Bukkit.getServer().getMinecraftVersion(), false);
-        return !PaperLib.isPaper() || minecraftVersion.compareTo(minimumCompatibleVersion) < 0;
-    }
-
     @Override
     public void onDisable() {
-        if (isIncompatible()) return;
-
         listenerManager.unregister();
         redstoneUpdateCount.stop();
         notifications.clearNotifications();
@@ -363,11 +342,6 @@ public class Insights extends InsightsPlugin {
     }
 
     @Override
-    public MetricsManager getMetricsManager() {
-        return metricsManager;
-    }
-
-    @Override
     public ScanHistory getScanHistory() {
         return scanHistory;
     }
@@ -384,19 +358,6 @@ public class Insights extends InsightsPlugin {
                     new PlayerTrackerTask(this),
                     0,
                     settings.CHUNK_SCANS_PLAYER_TRACKER_INTERVAL_TICKS
-            );
-        }
-
-        if (updateChecker != null) {
-            updateChecker.cancel();
-        }
-
-        if (settings.UPDATE_CHECKER_ENABLED) {
-            updateChecker = getServer().getScheduler().runTaskTimerAsynchronously(
-                    this,
-                    new UpdateCheckerTask(this),
-                    20,
-                    20L * settings.UPDATE_CHECKER_INTERVAL_SECONDS
             );
         }
 

@@ -45,10 +45,6 @@ public class CommandInsights extends InsightsCommand {
         ContainerExecutorService executor = ((Insights) plugin).getExecutor();
         plugin.getMessages().getMessage(Messages.Key.STATS).addTemplates(
                 Messages.tagOf("chunks_scanned", StringUtils.pretty(executor.getCompletedTaskCount())),
-                Messages.tagOf(
-                        "blocks_scanned",
-                        StringUtils.pretty(plugin.getMetricsManager().getTotalBlocksScanned().sum())
-                ),
                 Messages.tagOf("queue_size", StringUtils.pretty(executor.getQueueSize()))
         ).sendTo(sender);
     }

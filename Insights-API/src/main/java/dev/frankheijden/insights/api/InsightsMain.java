@@ -16,7 +16,6 @@ import dev.frankheijden.insights.api.config.Messages;
 import dev.frankheijden.insights.api.config.Notifications;
 import dev.frankheijden.insights.api.config.Settings;
 import dev.frankheijden.insights.api.listeners.manager.InsightsListenerManager;
-import dev.frankheijden.insights.api.metrics.MetricsManager;
 import dev.frankheijden.insights.nms.core.InsightsNMS;
 
 public interface InsightsMain {
@@ -52,8 +51,6 @@ public interface InsightsMain {
     WorldChunkScanTracker getWorldChunkScanTracker();
 
     AddonScanTracker getAddonScanTracker();
-
-    MetricsManager getMetricsManager();
 
     ScanHistory getScanHistory();
 

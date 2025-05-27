@@ -37,6 +37,16 @@ public class CommandSenderMapper implements SenderMapper<CommandSourceStack, Com
             public @Nullable Entity getExecutor() {
                 return sender instanceof Entity entity ? entity : null;
             }
+
+            @Override
+            public CommandSourceStack withLocation(Location location) {
+                return null;
+            }
+
+            @Override
+            public CommandSourceStack withExecutor(Entity entity) {
+                return null;
+            }
         };
     }
 }

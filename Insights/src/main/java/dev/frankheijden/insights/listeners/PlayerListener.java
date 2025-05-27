@@ -4,7 +4,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import dev.frankheijden.insights.api.InsightsPlugin;
 import dev.frankheijden.insights.api.listeners.InsightsListener;
-import dev.frankheijden.insights.api.tasks.UpdateCheckerTask;
 import dev.frankheijden.insights.api.utils.BlockUtils;
 import dev.frankheijden.insights.api.utils.LocationUtils;
 import org.bukkit.Location;
@@ -43,10 +42,6 @@ public class PlayerListener extends InsightsListener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         plugin.getPlayerList().addPlayer(player);
-
-        if (player.hasPermission("insights.update")) {
-            UpdateCheckerTask.check(player);
-        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
