@@ -53,9 +53,6 @@ subprojects {
     val libs = rootProject.libs
     dependencies {
         compileOnly(libs.paperApi)
-        implementation(libs.adventureApi)
-        implementation(libs.adventurePlatformBukkit)
-        implementation(libs.adventureMiniMessage)
 
         if (!nms || nmsImpl) {
             compileOnly(project(":Insights-NMS-Core"))
@@ -105,9 +102,6 @@ subprojects {
         relocate("dev.frankheijden.minecraftreflection", "$dependencyDir.minecraftreflection")
         relocate("io.papermc.lib", "$dependencyDir.paperlib")
         relocate("org.bstats", "$dependencyDir.bstats")
-        relocate("net.kyori.adventure", "$dependencyDir.adventure")
-        relocate("net.kyori.examination", "$dependencyDir.examination")
-        relocate("net.kyori.option", "$dependencyDir.option")
         if (nmsImpl) {
             relocate(project.group.toString().replaceAfterLast('.', "impl"), project.group.toString())
         }

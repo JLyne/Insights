@@ -12,6 +12,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.Mth;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.chunk.storage.SerializableChunkData;
+import net.minecraft.world.level.storage.TagValueInput;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -144,7 +146,8 @@ public class InsightsNMSImpl extends InsightsNMS {
     }
 
     private void readChunkEntities(CompoundTag nbt, Consumer<ChunkEntity> entityConsumer) {
-        var typeOptional = net.minecraft.world.entity.EntityType.by(nbt);
+        var typeOptional = net.minecraft.world.entity.EntityType.by(
+                TagValueInput.createGlobal(ProblemReporter.DISCARDING, nbt));
         if (typeOptional.isPresent()) {
             String entityTypeName = net.minecraft.world.entity.EntityType.getKey(typeOptional.get()).getPath();
             ListTag posList = nbt.getListOrEmpty("Pos");
