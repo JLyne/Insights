@@ -30,7 +30,7 @@ tasks.withType<ShadowJar> {
 paper {
     main = "dev.frankheijden.insights.Insights"
     description = "Insights about your server and regional block limits"
-    apiVersion = "1.21.5"
+    apiVersion = "1.21.6"
     website = "https://github.com/InsightsPlugin/Insights"
     authors = listOf("FrankHeijden")
     serverDependencies {
