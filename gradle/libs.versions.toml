@@ -1,6 +1,6 @@
 [versions]
 # libraries
-minecraft = "1.21.6-R0.1-SNAPSHOT"
+minecraft = "1.21.7-R0.1-SNAPSHOT"
 assertj = "3.23.1"
 mockito = "4.11.0"
 jupiter = "5.9.1"
