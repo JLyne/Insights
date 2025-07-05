@@ -9,8 +9,8 @@ cloudPaper = "2.0.0-beta.10"
 cloud = "2.0.0"
 
 # plugins
-shadow = "9.0.0-beta2"
-userdev = "2.0.0-beta.17"
+shadow = "9.0.0-rc1"
+userdev = "2.0.0-beta.18"
 pluginYml = "0.7.1"
 
 [libraries]
