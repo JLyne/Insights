@@ -7,6 +7,7 @@ import com.mojang.serialization.DataResult;
 import dev.frankheijden.insights.nms.core.ChunkEntity;
 import dev.frankheijden.insights.nms.core.ChunkSection;
 import dev.frankheijden.insights.nms.core.InsightsNMS;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
@@ -15,18 +16,19 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
+import net.minecraft.world.level.chunk.PalettedContainerFactory;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
-import net.minecraft.world.level.chunk.storage.SerializableChunkData;
 import net.minecraft.world.level.storage.TagValueInput;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftChunk;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
@@ -37,6 +39,12 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class InsightsNMSImpl extends InsightsNMS {
+    private final PalettedContainerFactory palettedContainerFactory;
+
+    public InsightsNMSImpl() {
+        RegistryAccess registryAccess = ((CraftServer) Bukkit.getServer()).getServer().registryAccess();
+        palettedContainerFactory = PalettedContainerFactory.create(registryAccess);
+    }
 
     @Override
     public void getLoadedChunkSections(Chunk chunk, Consumer<ChunkSection> sectionConsumer) {
@@ -58,6 +66,7 @@ public class InsightsNMSImpl extends InsightsNMS {
         CompoundTag tag = tagOptional.get();
 
         ListTag sectionsTagList = tag.getListOrEmpty("sections");
+        Codec<PalettedContainer<BlockState>> codec1 = palettedContainerFactory.blockStatesContainerCodec();
 
         DataResult<PalettedContainer<BlockState>> dataResult;
         int nonNullSectionCount = 0;
@@ -69,7 +78,14 @@ public class InsightsNMSImpl extends InsightsNMS {
 
             PalettedContainer<BlockState> blockStateContainer;
             if (sectionTag.contains("block_states")) {
-                Codec<PalettedContainer<BlockState>> blockStateCodec = SerializableChunkData.BLOCK_STATE_CODEC;
+                int byteOr = sectionTag.getByteOr("Y", (byte) 0);
+                BlockState[] presetBlockStates = serverLevel.chunkPacketBlockController.getPresetBlockStates(
+                     serverLevel, chunkPos, byteOr);
+                Codec<PalettedContainer<BlockState>> blockStateCodec = presetBlockStates == null
+                        ? codec1 : PalettedContainer.codecRW(BlockState.CODEC,
+                                                             palettedContainerFactory.blockStatesStrategy(),
+                                                             Blocks.AIR.defaultBlockState(), presetBlockStates);
+
                 dataResult = blockStateCodec.parse(
                         NbtOps.INSTANCE,
                         sectionTag.getCompoundOrEmpty("block_states")
@@ -88,12 +104,7 @@ public class InsightsNMSImpl extends InsightsNMS {
                     throw ex;
                 }
             } else {
-                blockStateContainer = new PalettedContainer<>(
-                        Block.BLOCK_STATE_REGISTRY,
-                        Blocks.AIR.defaultBlockState(),
-                        PalettedContainer.Strategy.SECTION_STATES,
-                        null
-                );
+                blockStateContainer = palettedContainerFactory.createForBlockStates();
             }
 
             LevelChunkSection chunkSection = new LevelChunkSection(blockStateContainer, null);
