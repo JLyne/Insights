@@ -3,15 +3,15 @@
 minecraft = "1.21.10-R0.1-SNAPSHOT"
 assertj = "3.23.1"
 mockito = "4.11.0"
-jupiter = "5.9.1"
+jupiter = "5.14.0"
 placeholderapi = "2.11.6"
 cloudPaper = "2.0.0-beta.10"
 cloud = "2.0.0"
 
 # plugins
-shadow = "9.0.0-rc1"
-userdev = "2.0.0-beta.18"
-pluginYml = "0.7.1"
+shadow = "9.2.2"
+userdev = "2.0.0-beta.19"
+pluginYml = "0.8.0"
 
 [libraries]
 paperApi = { group = "io.papermc.paper", name = "paper-api", version.ref = "minecraft" }
@@ -20,6 +20,7 @@ mockitoCore = { group = "org.mockito", name = "mockito-core", version.ref = "moc
 jupiterApi = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "jupiter" }
 jupiterParams = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "jupiter" }
 jupiterEngine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "jupiter" }
+jUnitPlatformLauncher = { group = "org.junit.platform", name = "junit-platform-launcher" }
 placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }
 cloudPaper = { group = "org.incendo", name = "cloud-paper", version.ref = "cloudPaper" }
 cloudAnnotations = { group = "org.incendo", name = "cloud-annotations", version.ref = "cloud" }
