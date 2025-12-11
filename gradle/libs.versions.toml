@@ -4,12 +4,12 @@ minecraft = "1.21.11-rc2-R0.1-SNAPSHOT"
 assertj = "3.23.1"
 mockito = "4.11.0"
 jupiter = "5.14.0"
-placeholderapi = "2.11.6"
+placeholderapi = "2.11.7"
 cloudPaper = "2.0.0-SNAPSHOT"
 cloud = "2.0.0"
 
 # plugins
-shadow = "9.2.2"
+shadow = "9.3.0"
 userdev = "2.0.0-beta.19"
 pluginYml = "0.8.0"
 
